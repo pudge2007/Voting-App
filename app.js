@@ -27,17 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var index = require('./routes/index');
 app.use('/', index);
 
-
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-var socketApi = require('./routes/socketApi');
-
-io.sockets.on('connection', socketApi.vote);
-server.listen(3000, process.env.IP || "0.0.0.0", function(){
-  var addr = server.address();
-  console.log("Chat server listening at", addr.address + ":" + addr.port);
-});
-
+// socket.io in ./bin/www
 
 
 // catch 404 and forward to error handler

@@ -33,7 +33,6 @@ router.post('/polls', function(req, res, next) {
 
 // API-интерфейс JSON для получения отдельного опроса
 router.get('/polls/:id', function(req, res, next) {
-  console.log(req.params.id)
   var pollId = req.params.id;
   Poll.findById(pollId, '', { lean: true }, function(err, poll) {
     if (err) throw err;

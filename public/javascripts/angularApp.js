@@ -11,30 +11,6 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   $locationProvider.html5Mode({ enabled: true, requireBase: false});
 }]);
 
-app.factory('socket',['$rootScope', function($rootScope) {
-  var socket = io.connect('0.0.0.0:3000');
-  return {
-    on: function (eventName, callback) {
-      socket.on(eventName, function () {  
-        var args = arguments;
-        $rootScope.$apply(function () {
-          callback.apply(socket, args);
-        });
-      });
-    },
-    emit: function (eventName, data, callback) {
-      socket.emit(eventName, data, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        });
-      })
-    }
-  };
-}]);
-
 app.controller('ListCtrl', ['$scope','$http', function($scope, $http){
   
   $http.get('/polls').then(function(response){
@@ -42,40 +18,42 @@ app.controller('ListCtrl', ['$scope','$http', function($scope, $http){
   });
 }]);
 
-app.controller('ItemCtrl', ['$scope', '$routeParams', '$http', 'socket', function($scope, $routeParams, $http, socket){
+app.controller('ItemCtrl', ['$scope', '$route', '$routeParams', '$http', function($scope, $route, $routeParams, $http){
   
   $http.get('/polls/' + $routeParams.id).then(function(response){
     $scope.poll = response.data;
   });  
-                           
-    socket.on('myvote', function(data) {
-        console.dir(data);
-        if(data._id === $routeParams.pollId) {
-              $scope.poll = data;
-            }
-        });
-    socket.on('vote', function(data) {
-        console.dir(data);
-        if(data._id === $routeParams.pollId) {
-              $scope.poll.choices = data.choices;
-              $scope.poll.totalVotes = data.totalVotes;
-            }   
-        });
-    $scope.vote = function() {
-        var pollId = $scope.poll._id;
-        var choiceId = $scope.poll.userVote;
-        if(choiceId) {
-            var voteObj = { poll_id: pollId, choice: choiceId };
-            socket.emit('send:vote', voteObj);
-        } else {
-            alert('You must select an option to vote for');
-        }
+  
+  var socket = io.connect();                         
+  socket.on('myvote', function(data) {
+      console.dir(data);
+      if(data._id === $routeParams.pollId) {
+            $scope.poll = data;
+          }
+      });
+  socket.on('vote', function(data) {
+      console.dir(data);
+      if(data._id === $routeParams.pollId) {
+            $scope.poll.choices = data.choices;
+            $scope.poll.totalVotes = data.totalVotes;
+          }   
+      });
+  $scope.vote = function() {
+      var pollId = $scope.poll._id;
+      var choiceId = $scope.poll.userVote;
+      if(choiceId) {
+          var voteObj = { poll_id: pollId, choice: choiceId };
+          socket.emit('send:vote', voteObj);
+           $route.reload();
+      } else {
+          alert('You must select an option to vote for');
+      }
     };
 }]);
 
 app.controller('NewPollCtrl', ['$scope','$http','$location', function($scope, $http, $location){
   
-    $scope.poll = {question: '', choices: [{ text: '' }, { text: '' }, { text: '' }] };
+    $scope.poll = {question: '', choices: [{ text: '' }, { text: '' }] };
     
     $scope.addChoice = function() {
       $scope.poll.choices.push({ text: '' });
