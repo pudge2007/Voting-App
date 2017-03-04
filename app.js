@@ -10,9 +10,6 @@ require('./models/Polls');
 var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/voting-app';
 mongoose.connect(url);
 
-var index = require('./routes/index');
-/*var routes = require('./routes/index');*/
-
 var app = express();
 
 // view engine setup
@@ -27,11 +24,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var index = require('./routes/index');
 app.use('/', index);
-/*app.get('/', routes.index);
-app.get('/polls', routes.list);
-app.get('/polls/:id', routes.poll);
-app.post('/polls', routes.create);*/
+
+
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var socketApi = require('./routes/socketApi');
+
+io.sockets.on('connection', socketApi.vote);
+server.listen(3000, process.env.IP || "0.0.0.0", function(){
+  var addr = server.address();
+  console.log("Chat server listening at", addr.address + ":" + addr.port);
+});
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -51,14 +58,5 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
-/*var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-
-io.sockets.on('connection', routes.vote);
-server.listen(3000, process.env.IP || "0.0.0.0", function(){
-  var addr = server.address();
-  console.log("Chat server listening at", addr.address + ":" + addr.port);
-});*/
 
 module.exports = app;
