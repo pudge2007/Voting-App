@@ -17,3 +17,7 @@ a {
   background-color: lightblue;
   text-align: right;
 }
+
+.navbar-header ul{
+  float: right;
+}

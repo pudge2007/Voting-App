@@ -4,18 +4,32 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var mongoose = require('mongoose');
-require('./models/Polls');
-var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/voting-app';
-mongoose.connect(url);
+var passport = require('passport');
+var session = require('express-session');
+var routes = require('./routes');
+var api = require('./routes/api');
 
 var app = express();
+
+require('dotenv').load();
+require('./config/passport')(passport);
+
+app.use(session({
+	secret: 'secretIb',
+	resave: false,
+	saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URI);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -24,8 +38,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var index = require('./routes/index');
-app.use('/', index);
+
+app.get('/', routes.index);
+app.get('/partials/:name', routes.partials);
+
+app.get('/polls', api.allPolls);
+app.post('/polls', api.createPoll);
+app.get('/polls/:id', api.singlePoll);
+
+app.get('*', routes.index);
 
 // socket.io in ./bin/www
 

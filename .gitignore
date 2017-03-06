@@ -3,3 +3,4 @@ Procfile.sh
 data
 .bowerrc
 bin
+.env

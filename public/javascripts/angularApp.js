@@ -3,9 +3,10 @@ var app = angular.module('polls', ["ngRoute"]);
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   
   $routeProvider
-    .when('/', { templateUrl: 'templates/list.ejs', controller: 'ListCtrl' })
-    .when('/poll/:id',{ templateUrl: 'templates/item.ejs', controller: 'ItemCtrl'})
-    .when('/new',{ templateUrl: 'templates/new.ejs', controller: 'NewPollCtrl' });
+    .when('/', { templateUrl: 'partials/home.ejs', controller: 'ListCtrl' })
+    .when('/poll/:id',{ templateUrl: 'partials/poll.ejs', controller: 'ItemCtrl'})
+    .when('/new',{ templateUrl: 'partials/new.ejs', controller: 'NewPollCtrl' })
+    .when('/profile',{ templateUrl: 'partials/profile.ejs', controller: 'UserCtrl' });
     
   $routeProvider.otherwise({ redirectTo: "/" });
   $locationProvider.html5Mode({ enabled: true, requireBase: false});
@@ -80,4 +81,7 @@ app.controller('NewPollCtrl', ['$scope','$http','$location', function($scope, $h
         alert('You must enter a question');
       }
     };
+}]);
+
+app.controller('UserCtrl', ['$scope','$http','$location', function($scope, $http, $location){
 }]);
