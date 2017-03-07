@@ -21,3 +21,7 @@ a {
 .navbar-header ul{
   float: right;
 }
+
+.ng-cloak {
+  display: none;
+}

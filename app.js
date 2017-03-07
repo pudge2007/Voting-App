@@ -11,17 +11,9 @@ var api = require('./routes/api');
 
 var app = express();
 
+
 require('dotenv').load();
 require('./config/passport')(passport);
-
-app.use(session({
-	secret: 'secretIb',
-	resave: false,
-	saveUninitialized: true
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_URI);
@@ -37,14 +29,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(session({ secret: 'secretIb', resave: false, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 
-app.get('/polls', api.allPolls);
-app.post('/polls', api.createPoll);
-app.get('/polls/:id', api.singlePoll);
+api(app, passport);
 
 app.get('*', routes.index);
 

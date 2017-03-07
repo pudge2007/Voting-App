@@ -1,15 +1,46 @@
-var app = angular.module('polls', ["ngRoute"]);
+var app = angular.module('polls', ['ngResource', 'ngRoute']);
 
-app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-  
+app.factory('loggedInterceptor', ['$rootScope', '$q', '$location', function($rootScope, $q, $location) {
+  return { 
+    responseError: function(response) { 
+      if (response.status === 401){
+        $location.url('/login');
+        return $q.reject(response);
+      }
+      else
+        return $q.reject(response); 
+    } 
+  };
+}]);
+
+app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
+  var checkLoggedin = function($q, $timeout, $http, $location){
+    var deferred = $q.defer();
+    $http.get('/loggedin').success(function(user){
+      if (user !== '0') deferred.resolve();
+      else { 
+        deferred.reject();
+        $location.url('/login');
+      } 
+    }); 
+    return deferred.promise; 
+  };
   $routeProvider
     .when('/', { templateUrl: 'partials/home.ejs', controller: 'ListCtrl' })
-    .when('/poll/:id',{ templateUrl: 'partials/poll.ejs', controller: 'ItemCtrl'})
+    .when('/poll/:id',{ templateUrl: 'partials/poll.ejs', controller: 'ItemCtrl', resolve: { loggedin: checkLoggedin }})
     .when('/new',{ templateUrl: 'partials/new.ejs', controller: 'NewPollCtrl' })
-    .when('/profile',{ templateUrl: 'partials/profile.ejs', controller: 'UserCtrl' });
+    .when('/profile',{ templateUrl: 'partials/profile.ejs', controller: 'UserCtrl', resolve: { loggedin: checkLoggedin } })
+    .when('/login',{ templateUrl: 'partials/login.ejs', controller: 'LoginCtrl' });
     
   $routeProvider.otherwise({ redirectTo: "/" });
   $locationProvider.html5Mode({ enabled: true, requireBase: false});
+  
+  $httpProvider.interceptors.push('loggedInterceptor');
+}]);
+
+  
+app.controller('MainCtrl', ['$scope','$http', '$location', function($scope, $http, $location){
+
 }]);
 
 app.controller('ListCtrl', ['$scope','$http', function($scope, $http){
@@ -83,5 +114,11 @@ app.controller('NewPollCtrl', ['$scope','$http','$location', function($scope, $h
     };
 }]);
 
-app.controller('UserCtrl', ['$scope','$http','$location', function($scope, $http, $location){
+app.controller('LoginCtrl', ['$scope','$http', function($scope, $http){
+}]);
+
+app.controller('UserCtrl', ['$scope','$http', function($scope, $http){
+  $http.get('/user').then(function(response){
+    $scope.username = response.data;
+  })
 }]);
