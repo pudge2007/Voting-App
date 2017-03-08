@@ -1,7 +1,20 @@
-		<div class="container">	
+		<div class="page-profile">	
 <h1>profile</h1>
             <a href="/new" class="btn btn-default"><span class="glyphicon 
 glyphicon-plus"></span> New Poll</a>
-		</div>
+
 		
 		<h2>Hello, {{username}}</h2>
+		
+		        <div class="row" ng-switch on="userPolls.length">
+          <ul ng-switch-when="0">
+            <li><em>No polls in database. Would you like to
+ <a href="/new">create one</a>?</li>
+          </ul>
+          <ul ng-switch-default>
+            <li ng-repeat="poll in userPolls">
+              <a href="/poll/{{poll._id}}">{{poll.question}}</a><span ng-click='deletePoll(poll._id)'>delete</span>
+            </li>
+          </ul>
+        </div>
+        		</div>

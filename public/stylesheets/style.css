@@ -1,3 +1,8 @@
+body, html {
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -6,6 +11,91 @@ body {
 a {
   color: #00B7FF;
 }
+
+
+.navbar-header ul{
+  float: right;
+}
+
+.ng-cloak {
+  display: none;
+}
+
+input.logout {
+  background-color: transparent;
+  border: none;
+  color: #9d9d9d;
+  padding-top: 17px;
+  padding-bottom: 15px;
+}
+
+input.logout:hover,
+input.logout:focus {
+  color: #fff;
+}
+
+.page-home {
+  margin-top: 50px;
+}
+
+.page-home h1 {
+  margin-bottom: 40px;
+  font-size: 52px;
+  font-weight: bold;
+}
+
+.page-home .form-control{
+  height: 40px;
+  margin-top: 28px;
+}
+
+.page-login {
+  margin-top: 100px;
+}
+
+.page-login h1 {
+  margin-bottom: 40px;
+  font-size: 52px;
+  font-weight: bold;
+}
+
+.page-login form > div {
+  position: relative;
+  display: inline-block;
+}
+
+.page-login form > div:after{
+  content: '';
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  width: 32px;
+  height: 32px;
+  display: block;
+  background: url(../images/github.png);
+  transition: .3s;
+}
+
+.btn-login {
+  background-color: #96d0e6;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 18px;
+  padding: 15px 60px 15px 30px;
+  transition: .3s;
+  position: relative;
+}
+
+.page-login form > div:hover:after{
+  background: url(../images/github_dark.png);
+}
+
+.page-login form > div:hover .btn-login{
+  border: 1px solid #333;
+  background-color: transparent;
+}
+
+
 
 .result-table td { padding: 8px; }
 .result-table > tbody > tr > td:first-child {
@@ -16,12 +106,4 @@ a {
 .result-table td table {
   background-color: lightblue;
   text-align: right;
-}
-
-.navbar-header ul{
-  float: right;
-}
-
-.ng-cloak {
-  display: none;
 }

@@ -5,10 +5,7 @@ var UserSchema = new mongoose.Schema({
 	    id: String,
 		displayName: String,
 		username: String
-	},
-    polls: {
-        id: String
-    }
+	}
 });
 
 module.exports = mongoose.model('User', UserSchema);

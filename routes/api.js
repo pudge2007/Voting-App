@@ -1,3 +1,4 @@
+var async = require('async');
 var Poll = require('../models/Polls');
 var User = require('../models/Users');
 
@@ -21,7 +22,7 @@ module.exports = function (app, passport) {
   app.post('/polls', isLoggedIn, function(req, res) {
     var reqBody = req.body,
         choices = reqBody.choices.filter(function(v) { return v.text != ''; }),
-        pollObj = {question: reqBody.question, choices: choices};
+        pollObj = {question: reqBody.question, choices: choices, userId: req.user.github.id};
     var poll = new Poll(pollObj);
     poll.save(function(err, doc) {
       if(err || !doc) {
@@ -33,7 +34,7 @@ module.exports = function (app, passport) {
   });
   
   // API-интерфейс JSON для получения отдельного опроса
-  app.get('/polls/:id', isLoggedIn, function(req, res) {
+  app.get('/polls/:id', function(req, res) {
     var pollId = req.params.id;
     Poll.findById(pollId, '', { lean: true }, function(err, poll) {
       if (err) throw err;
@@ -62,6 +63,14 @@ module.exports = function (app, passport) {
     });
   });
   
+  // API для удаления опроса
+  app.delete('/polls/:pollId', function(req, res){
+    Poll.remove({ _id: req.params.pollId}, function(err){
+      if(err) throw err;
+      res.send(200);
+    })
+  });
+  
   // initiate authentication with GitHub 
   app.get('/auth/github', passport.authenticate('github'));
 
@@ -77,18 +86,24 @@ module.exports = function (app, passport) {
 	  res.redirect('/login'); 
 	});
 	
-	
 	// API для проверки на аутентификацию
   app.get('/loggedin', function(req, res) {
-    res.send(req.isAuthenticated() ? req.user : '0');
+    res.send(req.isAuthenticated() ? req.user.github.id : '0');
   });
 	
 	 // API-интерфейс JSON для профиля
   app.get('/user', function(req, res, next) {
-    User.findOne({'github.id': req.user.github.id}).select({ 'github.displayName': 1, _id: 0}).exec(callback);
-      function callback(err, data) {
-        if(err){ res.send(err); }
-        res.json(data.github.displayName);
-      };
+    async.parallel({
+      name: function(callback){
+        return User.findOne({'github.id': req.user.github.id}).select({ 'github.displayName': 1, _id: 0}).exec(callback);
+      },
+      userPolls: function(callback){
+        return Poll.find({'userId': req.user.github.id}).select({ 'question': 1, _id: 1}).exec(callback);
+      }  
+      }, function(err, results){
+        if (err) throw err;
+        res.json(results);
+    });
   });
+  
 };
