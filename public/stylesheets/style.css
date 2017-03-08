@@ -4,14 +4,35 @@ body, html {
 }
 
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 50px 0px 30px;
+  font: 14px "Roboto", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+  margin-bottom: 40px;
+  font-size: 52px;
+  font-weight: bold;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 42px;
+  font-weight: bold;
 }
 
 a {
-  color: #00B7FF;
+  color: #96d0e6;
 }
 
+ul {
+  list-style: none;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+button, input[type='submit'] {
+  outline: none !important;
+}
 
 .navbar-header ul{
   float: right;
@@ -34,29 +55,116 @@ input.logout:focus {
   color: #fff;
 }
 
-.page-home {
-  margin-top: 50px;
+.page-home .banner {
+  background-color: #96d0e6;
+  padding: 70px 0 90px;
+  color: #f5f5f5;
+  margin-bottom: 30px;
 }
 
-.page-home h1 {
-  margin-bottom: 40px;
-  font-size: 52px;
-  font-weight: bold;
+.page-home .poll_link{
+  padding: 20px 15px;
+  border: 1px solid #96d0e6;
+  width: 100%;
+  display: block;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #666;
+  background-color: #fff;
+  font-style: normal;
+}
+
+.page-home .poll_link:hover,
+.page-home .poll_link:focus{
+  background-color: #96d0e6;
+  color: #fff;
+  text-decoration: none;
+}
+
+.page-home .banner h1{
+  text-transform: uppercase;
+  font-size: 70px;
+  margin-bottom: 20px;
+}
+
+.page-home .banner h4 {
+  font-size: 20px;
 }
 
 .page-home .form-control{
   height: 40px;
   margin-top: 28px;
 }
-
-.page-login {
+.page-single {
   margin-top: 100px;
 }
 
-.page-login h1 {
-  margin-bottom: 40px;
-  font-size: 52px;
-  font-weight: bold;
+.page-single h1 {
+  margin-top: 0;
+}
+
+.page-single .wrapper {
+  position: relative;
+}
+
+.page-single .wrapper .btn_back{
+  position: absolute;
+  bottom: 0px;
+  left: 30px;
+}
+
+.page-single .wrapper .btn_back .btn-back{
+  background-color: transparent;
+  border: 1px solid #96d0e6;
+  opacity: 1;
+  padding: 10px 20px;
+}
+
+.page-single .wrapper .btn_back .btn-back:hover,
+.page-single .wrapper .btn_back .btn-back:focus{
+  border: 1px solid #333;
+}
+
+.page-single .info{
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.page-single label.votes{
+  display: block;
+  border: 1px solid #96d0e6;
+  padding: 10px 60px;
+  font-size: 22px;
+  text-align: left;
+  border-radius: 5px;
+}
+
+.page-single .radio input[type=radio] {
+  margin-left: -25px;
+  top: 15px;
+}
+
+.btn-vote {
+  background-color: #96d0e6;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 18px;
+  padding: 7px 40px 7px 40px;
+  transition: .3s;
+  position: relative;
+  outline: none;
+  margin-top: 20px;
+}
+
+.btn-vote:hover,
+.btn-vote:focus{
+  border: 1px solid #333;
+  background-color: transparent;
+}
+
+.page-login {
+  margin-top: 100px;
 }
 
 .page-login form > div {
@@ -84,26 +192,16 @@ input.logout:focus {
   padding: 15px 60px 15px 30px;
   transition: .3s;
   position: relative;
+  outline: none;
 }
 
-.page-login form > div:hover:after{
+.page-login form > div:hover:after,
+.page-login form > div:focus:after{
   background: url(../images/github_dark.png);
 }
 
-.page-login form > div:hover .btn-login{
+.page-login form > div:hover .btn-login,
+.page-login form > div:focus .btn-login{
   border: 1px solid #333;
   background-color: transparent;
-}
-
-
-
-.result-table td { padding: 8px; }
-.result-table > tbody > tr > td:first-child {
-  width: 25%;
-  max-width: 300px;
-  text-align: right;
-}
-.result-table td table {
-  background-color: lightblue;
-  text-align: right;
 }
