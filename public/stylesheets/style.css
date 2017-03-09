@@ -38,6 +38,11 @@ button, input[type='submit'] {
   float: right;
 }
 
+.navbar-inverse .navbar-nav>li>a,
+input.logout{
+  font-size: 16px;
+}
+
 .ng-cloak {
   display: none;
 }
@@ -46,13 +51,18 @@ input.logout {
   background-color: transparent;
   border: none;
   color: #9d9d9d;
-  padding-top: 17px;
-  padding-bottom: 15px;
+  padding-top: 13.5px;
+  padding-bottom: 10px;
+  padding-left: 15px;
 }
 
 input.logout:hover,
 input.logout:focus {
   color: #fff;
+}
+
+.page-home {
+  margin-bottom: 50px;
 }
 
 .page-home .banner {
@@ -62,8 +72,8 @@ input.logout:focus {
   margin-bottom: 30px;
 }
 
-.page-home .poll_link{
-  padding: 20px 15px;
+.poll_link{
+  padding: 20px 160px 20px 15px;
   border: 1px solid #96d0e6;
   width: 100%;
   display: block;
@@ -73,6 +83,19 @@ input.logout:focus {
   color: #666;
   background-color: #fff;
   font-style: normal;
+  position: relative;
+  transition: 0.2s;
+}
+.poll_link span{
+  position: absolute;
+  top: 23px;
+  right: 25px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.poll_link span:hover{
+  color: #fff;
 }
 
 .page-home .poll_link:hover,
@@ -102,6 +125,8 @@ input.logout:focus {
 
 .page-single h1 {
   margin-top: 0;
+  text-align: left;
+  padding-left: 15px;
 }
 
 .page-single .wrapper {
@@ -114,15 +139,15 @@ input.logout:focus {
   left: 30px;
 }
 
-.page-single .wrapper .btn_back .btn-back{
+.btn_back .btn-back{
   background-color: transparent;
   border: 1px solid #96d0e6;
   opacity: 1;
   padding: 10px 20px;
 }
 
-.page-single .wrapper .btn_back .btn-back:hover,
-.page-single .wrapper .btn_back .btn-back:focus{
+.btn_back .btn-back:hover,
+.btn_back .btn-back:focus{
   border: 1px solid #333;
 }
 
@@ -161,6 +186,41 @@ input.logout:focus {
 .btn-vote:focus{
   border: 1px solid #333;
   background-color: transparent;
+}
+
+.page-profile {
+  margin-top: 70px;
+}
+
+.page-profile .btn-vote {
+  margin-bottom: 40px;
+  padding: 7px 60px;
+  margin-left: 15px;
+}
+
+.page-profile .poll_link span{
+  top: 20px;
+}
+
+.page-profile .poll_link span.results{
+  right: 100px;
+}
+
+.page-profile .poll_link a{
+  color: #666;
+  width: 100%;
+  display: block;
+}
+
+.page-profile .poll_link:hover,
+.page-profile .poll_link:focus{
+  background-color: #96d0e6;
+}
+
+.page-profile .poll_link:hover a,
+.page-profile .poll_link:focus a{
+  color: #fff;
+  text-decoration: none;
 }
 
 .page-login {
@@ -204,4 +264,29 @@ input.logout:focus {
 .page-login form > div:focus .btn-login{
   border: 1px solid #333;
   background-color: transparent;
+}
+
+.page-new {
+  margin-top: 70px;
+  margin-bottom: 50px;
+}
+
+.page-new .form-group {
+  margin-bottom: 25px;
+}
+
+.page-new .form-group .form-control {
+  height: 44px;
+  font-size: 12px;
+}
+
+.page-new  .btn-vote {
+  margin-top: 0;
+}
+
+.page-new .btn-default:hover,
+.page-new .btn-default:focus{
+  background-color: #96d0e6;
+  color: #fff;
+  border: 1px solid #96d0e6;
 }

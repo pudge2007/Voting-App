@@ -22,7 +22,7 @@
             </ul>
             <ul ng-switch-default>
               <li ng-repeat="poll in polls | filter:query">
-                <a class='poll_link' href="/poll/{{poll._id}}">{{poll.question}}</a>
+                <a class='poll_link' href="/poll/{{poll._id}}">{{poll.question}} <span class="glyphicon glyphicon-arrow-right text-right"></span> </a>
               </li>
             </ul>
           </div>

@@ -70,21 +70,21 @@ app.controller('ItemCtrl', ['$scope', '$route', '$routeParams', '$http', functio
   
   $http.get('/polls/' + $routeParams.id).then(function(response){
     $scope.poll = response.data;
-    chart ($scope.poll);
+    chart (response.data);
   });  
   
   var socket = io.connect();                         
   socket.on('myvote', function(data) {
     if(data._id === $routeParams.pollId) {
         $scope.poll = data;
-        chart ($scope.poll)
+        chart (data);
     }
   });
   socket.on('vote', function(data) {
     if(data._id === $routeParams.pollId) {
         $scope.poll.choices = data.choices;
         $scope.poll.totalVotes = data.totalVotes;
-        chart (data)
+        chart (data);
       }   
   });
   
@@ -124,7 +124,8 @@ app.controller('NewPollCtrl', ['$scope', '$http', '$location', function($scope, 
         }    
         if(choiceCount > 1) {
           $http.post('/polls', poll).then(function(response){
-              $location.path('/'); 
+            console.log(response)
+              $location.path('/poll/' + response.data._id); 
           });
         } else {
           alert('You must enter at least two choices');
@@ -147,5 +148,21 @@ app.controller('UserCtrl', ['$scope', '$route', '$http', function($scope, $route
       console.log('deleted')
     })
     $route.reload();
+  }
+    
+  function chart (poll){
+    var labels = [];
+    var votes = poll.choices.map(function(choice){
+      labels.push(choice.text);
+      return choice.votes.length;
+    })
+    $scope.labels = labels;
+    $scope.votes = votes;
+  }
+  
+  $scope.results = function (id) {
+    $http.get('/polls/' + id).then(function(response){
+      chart(response.data)
+    })
   }
 }]);
