@@ -22,7 +22,7 @@
               </form>
             </div>
             <div ng-show="poll.userVoted">
-              <canvas id="bar" class="chart chart-bar" data-options="options" chart-data="votes" chart-labels="labels"></canvas>
+              <canvas id="bar" class="chart chart-bar" chart-options="opt" chart-data="votes" chart-labels="labels"></canvas>
               <p class='info'>
                 <em>{{poll.totalVotes}} votes counted so far.
                   <span ng-show="poll.userChoice">You voted for <strong>{{poll.userChoice.text}}</strong>.</span>

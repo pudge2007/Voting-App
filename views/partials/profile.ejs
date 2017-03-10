@@ -20,7 +20,8 @@
             </ul>
           </div>
           <div class="col-sm-6">
-            <canvas id="doughnut" class="chart chart-doughnut" chart-data="votes" chart-labels="labels"></canvas>
+            <canvas ng-show='showChart' id="doughnut" class="chart chart-doughnut" chart-data="votes" chart-labels="labels"></canvas>
+            <p class='text-center' ng-hide='showChart'>no votes.</p>
           </div>
         </div>
       </div>

@@ -41,6 +41,20 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($ro
   $httpProvider.interceptors.push('loggedInterceptor');
 }]);
 
+// nav buttons  
+app.controller('MainCtrl', ['$scope', '$q', '$http', '$rootScope', function($scope, $q, $http, $rootScope){
+    var deferred = $q.defer();
+    $http.get('/loggedin').then(function(response){
+      if (response.data !== '0') {
+        deferred.resolve();
+        $scope.showing = true;
+      }
+      else {
+        $scope.showing = false;
+        deferred.reject();
+      } 
+    }); 
+}]);
 
 //all polls to index page
 app.controller('ListCtrl', ['$scope','$http', function($scope, $http){
@@ -61,6 +75,14 @@ app.controller('ItemCtrl', ['$scope', '$route', '$routeParams', '$http', functio
     })
     $scope.labels = labels;
     $scope.votes = votes;
+    $scope.opt =  {  scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
   }
   
   $http.get('/polls/' + $routeParams.id).then(function(response){
@@ -160,5 +182,4 @@ app.controller('UserCtrl', ['$scope', '$route', '$http', function($scope, $route
       chart(response.data)
     })
   }
-
 }]);

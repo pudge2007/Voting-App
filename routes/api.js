@@ -75,8 +75,7 @@ module.exports = function (app, passport) {
   app.get('/auth/github', passport.authenticate('github'));
 
   // called after GitHub authentication
-  app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
-    function(req, res) { 
+  app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) { 
       res.redirect('/profile'); 
     });
 
