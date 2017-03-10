@@ -82,7 +82,7 @@ module.exports = function (app, passport) {
 
   // logout
 	app.get('/logout', isLoggedIn, function (req, res) { 
-	  req.logout(); 
+	  req.logout();
 	  res.redirect('/login'); 
 	});
 	

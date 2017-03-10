@@ -14,38 +14,33 @@ app.factory('loggedInterceptor', ['$rootScope', '$q', '$location', function($roo
 }]);
 
 app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($routeProvider, $locationProvider, $httpProvider) {
-  var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
+  var checkLoggedin = function($q, $http, $location, $rootScope){
     var deferred = $q.defer();
     $http.get('/loggedin').then(function(response){
       if (response.data !== '0') {
         deferred.resolve();
-        $rootScope.showDetails = true
         $rootScope.userId = response.data;
       }
       else { 
         deferred.reject();
-        $rootScope.showDetails = false
         $location.url('/login');
       } 
     }); 
     return deferred.promise; 
   };
+
   $routeProvider
     .when('/', { templateUrl: 'partials/home.ejs', controller: 'ListCtrl' })
     .when('/poll/:id',{ templateUrl: 'partials/poll.ejs', controller: 'ItemCtrl' })
     .when('/new',{ templateUrl: 'partials/new.ejs', controller: 'NewPollCtrl', resolve: { loggedin: checkLoggedin }})
     .when('/profile',{ templateUrl: 'partials/profile.ejs', controller: 'UserCtrl', resolve: { loggedin: checkLoggedin } })
-    .when('/login',{ templateUrl: 'partials/login.ejs' });
+    .when('/login',{ templateUrl: 'partials/login.ejs'});
     
   $routeProvider.otherwise({ redirectTo: "/" });
   $locationProvider.html5Mode({ enabled: true, requireBase: false});
   $httpProvider.interceptors.push('loggedInterceptor');
 }]);
 
-  
-app.controller('MainCtrl', ['$scope','$http', '$location', function($scope, $http, $location){
-
-}]);
 
 //all polls to index page
 app.controller('ListCtrl', ['$scope','$http', function($scope, $http){
@@ -165,4 +160,5 @@ app.controller('UserCtrl', ['$scope', '$route', '$http', function($scope, $route
       chart(response.data)
     })
   }
+
 }]);
